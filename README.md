@@ -16,7 +16,7 @@ We use [Swarmlab](https://github.com/lis-epfl/swarmlab) as the simulator for dro
 git clone https://github.com/lis-epfl/swarmlab.git
 git clone https://github.com/DependableSystemsLab/SwarmFuzz.git
 ```
-Suppose that the Swarmlab repository is under the path `swarmlab`, and the SwarmFuzz repository in under the path `SwarmFuzz`.
+Suppose that the Swarmlab repository is under the path `swarmlab`, and the SwarmFuzz repository is under the path `SwarmFuzz`.
 
 
 ### 3) Change the Swarmlab accordingly
