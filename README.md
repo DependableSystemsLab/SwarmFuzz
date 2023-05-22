@@ -1,4 +1,4 @@
-# test_swarm
+# SwarmFuzz
 
 SwarmFuzz is a fuzzing framework to efficiently find SPVs (Swarm Propagation Vulnerabilities) in drone swarms. It uses a combination of graph theory and gradient-guided optimization to find the potential attack parameters. 
 
@@ -43,7 +43,6 @@ In the command window in MATLAB, run the following command
 ```
 cd fuzz/
 swarmfuzz(200, 201, 5, 5) 
-
 ```
 
 The arguments for the `fuzz` function are `(seedStart, seedEnd, dev, nb)`
