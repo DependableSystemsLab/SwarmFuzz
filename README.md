@@ -60,7 +60,7 @@ Therefore, by running `fuzz(200, 201, 5, 5)`, we are fuzzing the 5-drone swarm m
 
 ## Configurations
 - The default number of drones in the swarm is 5, if you want to test the swarm of 10/15 drones, do the following:
-    - Change the `nb` argument according when calling fuzz(seedStart, seedEnd, dev, nb)
+    - Change the `nb` argument according when calling `swarmfuzz(seedStart, seedEnd, dev, nb)`
     - In the file `parameters/param_swarm.m`, change the variable `p_swarm.nb_agents`.
     - In the file `@Swarm/Swarm.m`, in the function `get_colors(self)`, change `colors` to be an array with 10/15 rows. You can specify the color as you like.
 
