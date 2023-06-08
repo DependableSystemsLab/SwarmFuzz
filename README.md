@@ -2,7 +2,7 @@
 
 SwarmFuzz is a fuzzing framework to efficiently find SPVs (Swarm Propagation Vulnerabilities) in drone swarms. It uses a combination of graph theory and gradient-guided optimization to find the potential attack parameters. 
 
-For more details about SwarmFuzz, please refer to the paper published in DSN 2023 "SwarmFuzz: Discovering GPS Spoofing Attacks in Drone Swarms".
+For more details about SwarmFuzz, please refer to the paper published in DSN 2023 ["SwarmFuzz: Discovering GPS Spoofing Attacks in Drone Swarms"](https://blogs.ubc.ca/dependablesystemslab/2023/03/18/swarmfuzz-discovering-gps-spoofing-attacks-in-drone-swarms/).
 
 
 ## Get started
@@ -65,7 +65,16 @@ Therefore, by running `fuzz(200, 201, 5, 5)`, we are fuzzing the 5-drone swarm m
     - In the file `@Swarm/Swarm.m`, in the function `get_colors(self)`, change `colors` to be an array with 10/15 rows. You can specify the color as you like.
 
 ## Citations
-TODO
+If you find this code useful, please consider citing our paper.
+
+```
+@INPROCEEDINGS{swarmfuzz,
+  author={Yao, Yingao(Elaine) and Dash, Pritam and Pattabiraman, Karthik},
+  booktitle={2023 53st Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN)}, 
+  title={SwarmFuzz: Discovering GPS Spoofing Attacks in Drone Swarms}, 
+  year={2023}}
+```
+
 
 ## Contact
 For questions about our paper or this code, please open an issue or contact Elaine Yao (elainedv111@gmail.com)
