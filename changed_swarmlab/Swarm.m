@@ -184,13 +184,14 @@ classdef Swarm < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function colors = get_colors(self)
-            colors = zeros(3, self.nb_agents);
-
-            for i = 1:self.nb_agents
-                colors(:, i) = self.drones(i).color;
-            end
+             colors = zeros(3, self.nb_agents);
+ 
+             for i = 1:self.nb_agents
+                 colors(:, i) = self.drones(i).color;
+             end
 
         end
+
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function update_state(self, wind, time)
 
@@ -200,13 +201,13 @@ classdef Swarm < handle
         end
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        function [vel_commands, collisions] = update_command(self, p_swarm, r_coll, dt,time, start_t, dur, att_id, vic_id, dev_y, pos_csv, dist_csv, col_csv, info_csv)
+        function [vel_commands, collisions] = update_command(self, p_swarm, r_coll, dt ,time, start_t, dur, att_id, vic_id1, vic_id2, dev_y, dire_csv, posY_csv, dist_csv)
 
             % Select the swarm algorithm and call the associated update
             if self.algorithm == "vasarhelyi"
-                [vel_commands, collisions] = self.compute_vel_vasarhelyi(p_swarm, r_coll, dt, time, start_t, dur, att_id, vic_id, dev_y, pos_csv, dist_csv, col_csv, info_csv);
+                [vel_commands, collisions] = self.compute_vel_vasarhelyi(p_swarm, r_coll, dt);
             elseif self.algorithm == "olfati_saber"
-                [vel_commands, collisions] = self.compute_vel_olfati_saber(p_swarm, r_coll, dt);
+                [vel_commands, collisions] = self.compute_vel_olfati_saber(p_swarm, r_coll, dt, time, start_t, dur, att_id, vic_id1, vic_id2, dev_y, dire_csv, posY_csv, dist_csv);
             end
             if isempty(self.collisions_history)
                 self.collisions_history = collisions;

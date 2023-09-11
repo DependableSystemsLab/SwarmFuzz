@@ -1,11 +1,15 @@
 % In your main, run this script after the swarm initialization
 
 % Variables to be set
-p_swarm.is_active_migration = false;
-p_swarm.is_active_goal = true;
+p_swarm.is_active_migration = true;
+p_swarm.is_active_goal = false;
 p_swarm.is_active_arena = false;
 p_swarm.is_active_spheres = false;
 p_swarm.is_active_cyl = true;
+
+% Elaine - add paths
+currentFolder = pwd;
+root_f = fullfile(currentFolder,'../../');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Number of agents
@@ -78,14 +82,14 @@ if (exist('map','var') && ACTIVE_ENVIRONMENT)
 
     nb_obstacles = length(map.buildings_east);
     cylinder_radius = map.building_width / 2;
-    
+
     p_swarm.cylinders = [
         map.buildings_north'; % x_obstacle
         map.buildings_east'; % y_obstacle
         repmat(cylinder_radius, 1, nb_obstacles)]; % r_obstacle
-
+    obs_loc_csv = [root_f 'obstacle_loc.csv'];
+    writematrix(p_swarm.cylinders, obs_loc_csv);
     p_swarm.n_cyl = length(p_swarm.cylinders(1, :));
-    
 else
     p_swarm.cylinders = 0;
     p_swarm.n_cyl = 0;
@@ -124,34 +128,32 @@ p_swarm.max_v = 7;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Initial positions are contained in a cubic area
-p_swarm.P0 = [-50,125,-50]'; % [m] position of a vertex of the cube
-p_swarm.P = 50; % [m] cube edge size
+p_swarm.P0 = [-10,150,-50]'; % [m] position of a vertex of the cube
+p_swarm.P = 20; % [m] cube edge size
 
 % Velocities are inizialized in a cubic subspace
 p_swarm.V0 = [0,0,0]'; % [m/s]
 p_swarm.V = 0; % [m/s]
 
+% % Seed to avoid random effects
+% p_swarm.seed = 5;
+% rng(p_swarm.seed);
 
-
-% Set the goal
-% --------- Setting 1 begins ----------
-goal_y = 164.5;
-goal_x = 180;
-x_goal_temp = [goal_x; goal_y; -38];
-
-p_swarm.x_goal = repmat(x_goal_temp, 1, p_swarm.nb_agents);
-% --------- Setting 1 ends ----------
-
-% --------- Setting 2 begins ----------
-% set the seed to avoid random effects
+% Elaine
 myStream = RandStream('mt19937ar','Seed', p_swarm.seed);
 p_swarm.Pos0 = p_swarm.P0 + p_swarm.P * rand(myStream,3,p_swarm.nb_agents);
-% we make the z-axis of all swarm members the same
-p_swarm.Pos0 = [p_swarm.Pos0(1:2, :); -38*ones(1, p_swarm.nb_agents)];
-
 p_swarm.Vel0 = p_swarm.V0 + p_swarm.V * rand(myStream,3,p_swarm.nb_agents);
-% p_swarm.Vel0 = p_swarm.V0 + p_swarm.V * rand(3,p_swarm.nb_agents);
-% --------- Setting 2 ends ----------
+
+% Elaine - set the z axis to the same
+p_swarm.Pos0 = [p_swarm.Pos0(1:2, :); -38*ones(1, p_swarm.nb_agents)];
+seed = num2str(p_swarm.seed);
+
+
+currentFolder = pwd;
+root_f = fullfile(currentFolder,'../../');
+loc_csv = [root_f 'fuzz/tmp/starting_loc.csv'];   
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Call algorithm-specific swarm parameters

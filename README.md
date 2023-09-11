@@ -1,8 +1,6 @@
-# SwarmFuzz
+# SwarmFuzzBinary
 
-SwarmFuzz is a fuzzing framework to efficiently find SPVs (Swarm Propagation Vulnerabilities) in drone swarms. It uses a combination of graph theory and gradient-guided optimization to find the potential attack parameters. 
-
-For more details about SwarmFuzz, please refer to the paper published in DSN 2023 ["SwarmFuzz: Discovering GPS Spoofing Attacks in Drone Swarms"](https://blogs.ubc.ca/dependablesystemslab/2023/03/18/swarmfuzz-discovering-gps-spoofing-attacks-in-drone-swarms/).
+SwarmFuzzBinary is a fuzzing framework to efficiently find Swarm Propagation Vulnerabilities(SPVs) in drone swarms. It uses observation-based seed scheduling and binary search to find the potential attack parameters. 
 
 
 ## Get started
@@ -29,7 +27,6 @@ cp SwarmFuzz/changed_swarmlab/compute_vel_vasarhelyi.m swarmlab/@Swarm
 cp SwarmFuzz/changed_swarmlab/param_swarm.m swarmlab/parameters/
 cp SwarmFuzz/changed_swarmlab/example_vasarhelyi.m swarmlab/examples/examples_swarm/
 cp SwarmFuzz/changed_swarmlab/Swarm.m swarmlab/@Swarm
-cp SwarmFuzz/changed_swarmlab/create_shifted_buildings.m swarmlab/graphics/graphics_map/
 ```
 ### 4) Open Swarmlab
 Under `swarmlab/`, open MATLAB, 
@@ -41,21 +38,22 @@ matlab
 ### 5) Run SwarmFuzz
 In the command window in MATLAB, run the following command
 ```
-cd fuzz/
-swarmfuzz(200, 201, 5, 5) 
+cd fuzz/fuzz
+swarmfuzzbinary(200, 201, 5, 5) 
 ```
 
-The arguments for the `fuzz` function are `(seedStart, seedEnd, dev, nb)`
+The arguments for the `swarmfuzzbinary` function are `(seedStart, seedEnd, dev, nb)`
 - `seedStart`: the seed for the first mission 
 - `seedEnd`: the seed for the last mission
 - `dev`: GPS spoofing deviation
 - `nb`: number of drones in the swarm
-Therefore, by running `fuzz(200, 201, 5, 5)`, we are fuzzing the 5-drone swarm missions with seed 200 and 201, with the 5m GPS spoofing deviation.
+Therefore, by running `swarmfuzzbinary(200, 201, 5, 5)`, we are fuzzing the 5-drone swarm missions with seed 200 and 201, with the 5m GPS spoofing deviation.
 
 ### 6) Interprete the result
-- `fuzz/seedpools/pool{seed}.csv`: Generated seedpool for each mission. Each row represents `[target_id, victim_id, deviation_direction, spoofing_time]`. The number of rows represents the number of potential attack-victim drone pairs in this mission.
-- `fuzz/attResults/att_results{seed}.csv`: Attack results found by SwarmFuzz for each mission. Each row represents `[collision_or_not, init_VDO, current_VDO, spoofing_start_time, spooing_duration, attack_id, victim_id, spooing_deviation]`. The number of rows present the attack results for each seed.
-- `fuzz/search/iteration{seed}.csv`: Results for each gradient descent search iteration. The number of rows represents the overhead of the fuzzing, i.e., the number of iterations taken to find the attack.  
+- `fuzz/seed_generation/seedpool{seed}.csv`: Generated seedpool for each mission. Each row represents `[seed, deviation_direction, target_id, victim1_id, victim2_id, start_t, spoofing_time]`. The number of rows represents the number of potential attack-victim drone pairs in this mission.
+- `fuzz/search/gpsParam{seed}.csv`: Attack results found by SwarmFuzz for each mission. Each row represents 
+`[collision_or_not, seed, deviation_direction, target_id, victim1_id, victim2_id, spoofing_start_time, spooing_duration]`. The number of rows present the attack results for each seed.
+- `fuzz/search/paramTmp{seed}.csv`: Results for each binary search iteration. The number of rows represents the overhead of the fuzzing, i.e., the number of iterations taken to find the attack.  
 
 
 ## Configurations
@@ -63,17 +61,6 @@ Therefore, by running `fuzz(200, 201, 5, 5)`, we are fuzzing the 5-drone swarm m
     - Change the `nb` argument according when calling `swarmfuzz(seedStart, seedEnd, dev, nb)`
     - In the file `parameters/param_swarm.m`, change the variable `p_swarm.nb_agents`.
     - In the file `@Swarm/Swarm.m`, in the function `get_colors(self)`, change `colors` to be an array with 10/15 rows. You can specify the color as you like.
-
-## Citations
-If you find this code useful, please consider citing our paper.
-
-```
-@INPROCEEDINGS{swarmfuzz,
-  author={Yao, Yingao(Elaine) and Dash, Pritam and Pattabiraman, Karthik},
-  booktitle={2023 53st Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN)}, 
-  title={SwarmFuzz: Discovering GPS Spoofing Attacks in Drone Swarms}, 
-  year={2023}}
-```
 
 
 ## Contact
