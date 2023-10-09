@@ -29,7 +29,7 @@ function swarmfuzz(seedStart, seedEnd, dev, nb)
         dire_csv = [root_f 'fuzz/prepare/dire' num2str(seed) '.csv'];
 %         seedpool_csv = [root_f 'fuzz/seed_generation/pool' num2str(seed) '.csv'];
         seedpool_csv = [root_f 'fuzz/seedpools/pool' num2str(seed) '.csv']; % for computecanada version
-        f_out = [root_f 'fuzz/results/att_results' num2str(seed) '.csv'];
+        f_out = [root_f 'fuzz/attResults/att_results' num2str(seed) '.csv'];
         
         % Delete previous temp files
         if isfile(pos_csv)
