@@ -53,8 +53,8 @@ The arguments for the `fuzz` function are `(seedStart, seedEnd, dev, nb)`
 Therefore, by running `fuzz(200, 201, 5, 5)`, we are fuzzing the 5-drone swarm missions with seed 200 and 201, with the 5m GPS spoofing deviation.
 
 ### 6) Interprete the result
-- `fuzz/seedpools/pool{seed}.csv`: Generated seedpool for each mission. Each row represents `[target_id, victim_id, deviation_direction, spoofing_time]`. The number of rows represents the number of potential attack-victim drone pairs in this mission.
-- `fuzz/attResults/att_results{seed}.csv`: Attack results found by SwarmFuzz for each mission. Each row represents `[collision_or_not, init_VDO, current_VDO, spoofing_start_time, spooing_duration, attack_id, victim_id, spooing_deviation]`. The number of rows present the attack results for each seed.
+- `fuzz/seedpools/pool{seed}.csv`: Generated seedpool for each mission. Each row represents `[target_id, victim_id, deviation_direction, spoofing_time]`. The number of rows represents the number of potential target-victim drone pairs in this mission.
+- `fuzz/attResults/att_results{seed}.csv`: Attack results found by SwarmFuzz for each mission. Each row represents `[collision_or_not, init_VDO, current_VDO, spoofing_start_time, spooing_duration, target_id, victim_id, spooing_deviation]`. The number of rows present the attack results for each seed.
 - `fuzz/search/iteration{seed}.csv`: Results for each gradient descent search iteration. The number of rows represents the overhead of the fuzzing, i.e., the number of iterations taken to find the attack.  
 
 
@@ -64,9 +64,24 @@ Therefore, by running `fuzz(200, 201, 5, 5)`, we are fuzzing the 5-drone swarm m
     - In the file `parameters/param_swarm.m`, change the variable `p_swarm.nb_agents`.
     - In the file `@Swarm/Swarm.m`, in the function `get_colors(self)`, change `colors` to be an array with 10/15 rows. You can specify the color as you like.
 
+## Collision cases found by SwarmFuzz
+Some collision cases found by SwarmFuzz are stored in folder `./collision_cases`. Here are the steps to reproduce and visualize the collisions based on the `att_resultsxxx.csv` file. For example, if we want to reproduce `collision_cases/5drones/5m/att_results216.csv`, do the following:
+- Find the row whose first parameter (i.e., `collision_or_not`) is 1, which means that collision occurs. In our example, the row is `1,5.72422801639505,0.501927503804293,4.09705120045216,18.022326120527,4,5,5`.
+- Under `swarmlab/examples/examples_swarm/`, first create an folder called `./output`, and then create an empty txt file called `tmp.txt` under `swarmlab/examples/examples_swarm/output/`. Run 
+```
+./example_vasarhelyi(4.09705120045216,18.022326120527, 4, 5,5,216, './output/tmp.txt', './output/tmp.txt', './output/tmp.txt', './output/tmp.txt')
+```
+
+In the above command, the GPS spoofing attack starts at `4.09705120045216`s with the duration of `18.022326120527`s. The target drone is No.`4`. The victim drone is No.`5`. The GPS spoofing deviation is `5`m with the right(i.e. `1`) direction. The seed for the mission is `216`. The `./otput/tmp.txt` is just a file to store intermediate results.
+- At around 45s, we can observe that the drone collides with the obstacle. The screenshot of the simulator is attached.
+
+![Fig. 1](./figures/5drones_5m_216_view1.png)
+![Fig. 2](./figures/5drones_5m_216_view2.png)
+![Fig. 3](./figures/5drones_5m_216_view3.png)
+
 ## Citations
 If you find this code useful, please consider citing our paper.
-
+C
 ```
 @INPROCEEDINGS{swarmfuzz,
   author={Yao, Yingao(Elaine) and Dash, Pritam and Pattabiraman, Karthik},
